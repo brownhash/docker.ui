@@ -1,7 +1,7 @@
 package modals
 
 type Image struct {
-	Id 			string					`json:"id"`
+	Id			string					`json:"id"`
 	RepoTag 	[]string				`json:"repo_tag"`
 	Size 		int64					`json:"size"`
 	RepoDigest 	[]string				`json:"repo_digest"`
