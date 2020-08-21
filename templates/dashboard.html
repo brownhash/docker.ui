@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- UIkit CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.5.6/dist/css/uikit.min.css" />
+
+    <!-- UIkit JS -->
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.5.6/dist/js/uikit.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.5.6/dist/js/uikit-icons.min.js"></script>
+
+    <title>docker.ui</title>
+
+    <style>
+        #content {
+            margin-left: 10%;
+            margin-right: 10%;
+        }
+    </style>
+</head>
+<body>
+<nav class="uk-navbar-container uk-margin" uk-navbar>
+    <div class="uk-navbar-center">
+        <a class="uk-navbar-item uk-logo" href="/">docker.ui</a>
+    </div>
+</nav>
+
+<div id="content">
+    <ul uk-accordion>
+        <li>
+            <a class="uk-accordion-title" href="#">Images</a>
+            <div class="uk-accordion-content">
+                <div class="uk-alert-success" uk-alert>
+                    <p>Support for delete all coming soon</p>
+                </div>
+                <div id="images">
+
+                </div>
+            </div>
+        </li>
+        <li>
+            <a class="uk-accordion-title" href="#">Containers</a>
+            <div class="uk-accordion-content">
+                <div class="uk-alert-success" uk-alert>
+                    <p>Coming soon</p>
+                </div>
+            </div>
+        </li>
+    </ul>
+
+</div>
+
+<span id="data"></span>
+<script>
+    fetch('/images')
+        .then(response => response.json())
+        .then(data => {
+                setImageData(data);
+            }
+        );
+
+    function setImageData(data) {
+        let imageArea = document.getElementById("images");
+        let injectData = "";
+
+        for (let i=0; i<data.length; i++) {
+            let imageData = data[i];
+
+            for (let j=0; j<imageData.repo_tag.length; j++) {
+                let repoName = imageData.repo_tag[j].split(":")[0];
+                let repoTag = imageData.repo_tag[j].split(":")[1];
+                let creationDate = new Date(imageData.created_at);
+
+                console.log(imageData.labels);
+
+                let imageCard =
+                    "<div class=\"uk-card uk-card-default\" style=\"float: left; margin: 10px; width: 24rem; padding: 15px\">" +
+                        "<div class=\"uk-card-header\">" +
+                            "<h4 class=\"uk-card-title uk-margin-remove-bottom\">" +
+                            "<input class=\"uk-input uk-form-blank\" type=\"text\" value=\""+ repoName +"\" readonly>" +
+                            "</h4>" +
+                        "</div>" +
+                        "<div>" +
+                            "<table class=\"uk-table uk-table-divider uk-table-small\">" +
+                                "<tbody>" +
+                                    "<tr>" +
+                                        "<th>" +
+                                            "Tag" +
+                                        "</th>" +
+                                        "<td>" +
+                                            repoTag +
+                                        "</td>" +
+                                    "</tr>" +
+                                    "<tr>" +
+                                        "<th>" +
+                                            "Size" +
+                                        "</th>" +
+                                        "<td>" +
+                                            "<span class=\"uk-badge\">"+ Math.round(parseInt(imageData.size)/(1024*1024)) + " mb" +"</span>" +
+                                        "</td>" +
+                                    "</tr>" +
+                                    "<tr>" +
+                                        "<th>" +
+                                            "SHA" +
+                                        "</th>" +
+                                        "<td>" +
+                                            imageData.id.toString().split(":")[1].substr(0,12) +
+                                        "</td>" +
+                                    "</tr>" +
+
+                                "<tbody>" +
+                            "</table>" +
+                        "</div>" +
+                    "</div>"
+                ;
+                injectData += imageCard;
+            }
+        }
+        imageArea.innerHTML = injectData;
+    }
+</script>
+</body>
+</html>
