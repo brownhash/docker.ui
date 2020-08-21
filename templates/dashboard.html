@@ -29,7 +29,7 @@
 <div id="content">
     <ul uk-accordion>
         <li>
-            <a class="uk-accordion-title" href="#">Images (<span id="imageCount"></span>)</a>
+            <a class="uk-accordion-title" href="#">Images (<span id="imageCount"></span>) <span class="uk-badge"><span id="imageSize"></span> mb</span></a>
             <div class="uk-accordion-content">
                 <div class="uk-alert-success" uk-alert>
                     <p>Support for delete all coming soon</p>
@@ -62,11 +62,15 @@
 
     function setImageData(data) {
         document.getElementById("imageCount").innerHTML = data.length;
+
+        let totalSize = 0;
         let imageArea = document.getElementById("images");
         let injectData = "";
 
         for (let i=0; i<data.length; i++) {
             let imageData = data[i];
+            let roundSize = Math.round(parseInt(imageData.size)/(1024*1024));
+            totalSize = totalSize + roundSize;
 
             for (let j=0; j<imageData.repo_tag.length; j++) {
                 let repoName = imageData.repo_tag[j].split(":")[0];
@@ -98,7 +102,7 @@
                                             "Size" +
                                         "</th>" +
                                         "<td>" +
-                                            "<span class=\"uk-badge\">"+ Math.round(parseInt(imageData.size)/(1024*1024)) + " mb" +"</span>" +
+                                            "<span class=\"uk-badge\">"+ roundSize + " mb" +"</span>" +
                                         "</td>" +
                                     "</tr>" +
                                     "<tr>" +
@@ -118,7 +122,9 @@
                 injectData += imageCard;
             }
         }
+
         imageArea.innerHTML = injectData;
+        document.getElementById("imageSize").innerHTML = totalSize.toString();
     }
 </script>
 </body>
