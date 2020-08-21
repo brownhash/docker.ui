@@ -29,7 +29,7 @@
 <div id="content">
     <ul uk-accordion>
         <li>
-            <a class="uk-accordion-title" href="#">Images</a>
+            <a class="uk-accordion-title" href="#">Images (<span id="imageCount"></span>)</a>
             <div class="uk-accordion-content">
                 <div class="uk-alert-success" uk-alert>
                     <p>Support for delete all coming soon</p>
@@ -61,6 +61,7 @@
         );
 
     function setImageData(data) {
+        document.getElementById("imageCount").innerHTML = data.length;
         let imageArea = document.getElementById("images");
         let injectData = "";
 
