@@ -3,56 +3,62 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- UIkit CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.5.6/dist/css/uikit.min.css" />
 
-    <!-- UIkit JS -->
-    <script src="https://cdn.jsdelivr.net/npm/uikit@3.5.6/dist/js/uikit.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/uikit@3.5.6/dist/js/uikit-icons.min.js"></script>
+    <!-- CSS only -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 
-    <title>docker.ui</title>
+    <!-- JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 
     <style>
-        #content {
-            margin-left: 10%;
-            margin-right: 10%;
+        .content-holder {
+            margin-right: 5%;
+            margin-left: 5%;
+        }
+        .content {
+            margin: 10px;
         }
     </style>
 </head>
 <body>
-<nav class="uk-navbar-container uk-margin" uk-navbar>
-    <div class="uk-navbar-center">
-        <a class="uk-navbar-item uk-logo" href="/">docker.ui</a>
-    </div>
+
+<nav class="navbar navbar-dark bg-dark">
+    <span class="navbar-brand mb-0 h1">docker.ui</span>
 </nav>
 
-<div id="content">
-    <ul uk-accordion>
-        <li>
-            <a class="uk-accordion-title" href="#">Images (<span id="imageCount"></span>) <span class="uk-badge"><span id="imageSize"></span> mb</span></a>
-            <div class="uk-accordion-content">
-                <div class="uk-alert-success" uk-alert>
-                    <p>Support for delete all coming soon</p>
-                </div>
-                <div id="images">
-
-                </div>
-            </div>
-        </li>
-        <li>
-            <a class="uk-accordion-title" href="#">Containers</a>
-            <div class="uk-accordion-content">
-                <div class="uk-alert-success" uk-alert>
-                    <p>Coming soon</p>
-                </div>
-            </div>
-        </li>
-    </ul>
-
+<div class="jumbotron">
+    <h1 class="display-4">Welcome to docker.ui</h1>
+    <p class="lead">This is a light weight dashboard that will help you to easily manage your local docker setup.</p>
+    <hr class="my-4">
+    <p>Lets begin,</p>
+    <a class="btn btn-dark btn-lg" href="#" role="button" onclick="showImages()">Images</a> <a class="btn btn-dark btn-lg" href="#" role="button" onclick="showContainers()">Containers</a>
 </div>
+
+<div id="images-container" style="display: none">
+    <div class="card">
+        <div class="card-body">
+            <span class="badge badge-dark" id="imageCount"></span> Images acquiring <span class="badge badge-dark" id="imageSize"></span> mb of disk space
+        </div>
+    </div>
+    <div id="images"></div>
+</div>
+
+<div class="card text-white bg-dark content-holder" id="containers-container" style="display: none">
+    <div class="card-header">
+        Containers
+    </div>
+    <div class="card-body">
+        <div id="containers"></div>
+    </div>
+</div>
+
 
 <span id="data"></span>
 <script>
+    const emptyIdentifier = "---";
+    const nullIdentifier = "<none>";
     fetch('/images')
         .then(response => response.json())
         .then(data => {
@@ -74,57 +80,47 @@
 
             for (let j=0; j<imageData.repo_tag.length; j++) {
                 let repoName = imageData.repo_tag[j].split(":")[0];
+                if (repoName === nullIdentifier) {
+                    repoName = emptyIdentifier
+                }
+
                 let repoTag = imageData.repo_tag[j].split(":")[1];
+                if (repoTag === nullIdentifier) {
+                    repoTag = emptyIdentifier
+                }
+
                 let creationDate = new Date(imageData.created_at);
 
-                console.log(imageData.labels);
-
-                let imageCard =
-                    "<div class=\"uk-card uk-card-default\" style=\"float: left; margin: 10px; width: 24rem; padding: 15px\">" +
-                        "<div class=\"uk-card-header\">" +
-                            "<h4 class=\"uk-card-title uk-margin-remove-bottom\">" +
-                            "<input class=\"uk-input uk-form-blank\" type=\"text\" value=\""+ repoName +"\" readonly>" +
-                            "</h4>" +
-                        "</div>" +
-                        "<div>" +
-                            "<table class=\"uk-table uk-table-divider uk-table-small\">" +
-                                "<tbody>" +
-                                    "<tr>" +
-                                        "<th>" +
-                                            "Tag" +
-                                        "</th>" +
-                                        "<td>" +
-                                            repoTag +
-                                        "</td>" +
-                                    "</tr>" +
-                                    "<tr>" +
-                                        "<th>" +
-                                            "Size" +
-                                        "</th>" +
-                                        "<td>" +
-                                            "<span class=\"uk-badge\">"+ roundSize + " mb" +"</span>" +
-                                        "</td>" +
-                                    "</tr>" +
-                                    "<tr>" +
-                                        "<th>" +
-                                            "SHA" +
-                                        "</th>" +
-                                        "<td>" +
-                                            imageData.id.toString().split(":")[1].substr(0,12) +
-                                        "</td>" +
-                                    "</tr>" +
-
-                                "<tbody>" +
-                            "</table>" +
-                        "</div>" +
-                    "</div>"
-                ;
-                injectData += imageCard;
+                injectData += "<div class=\"card content\" id=\""+ repoName +"\" style=\"width: 18rem; float: left;\">" +
+                            "<div class=\"card-header\" style=\"overflow: auto\">" +
+                                "<div class=\"form-check form-check-inline\">" +
+                                    "<input name=\"imageId\" class=\"form-check-input\" type=\"checkbox\" value=\"" + imageData.id +"\">" +
+                                    "<label class=\"form-check-label\" for=\"inlineCheckbox1\">" +
+                                        "<span style=\"white-space: nowrap;\">" + repoName.toString() +"</span>" +
+                                    "</label>" +
+                                "</div>" +
+                            "</div>" +
+                            "<div class=\"card-body\">" +
+                                "<span class=\"badge badge-primary\">" + repoTag +"</span> <span class=\"badge badge-success\">" + roundSize +" mb</span>" +
+                                "<br /><br />" +
+                                "Image Sha <span class=\"badge badge-primary\">" + imageData.id.split(":")[1].substr(0, 12) +"</span>" +
+                            "</div>" +
+                        "</div>";
             }
         }
 
         imageArea.innerHTML = injectData;
         document.getElementById("imageSize").innerHTML = totalSize.toString();
+    }
+
+    function showImages() {
+        document.getElementById("images-container").style.display = "block";
+        document.getElementById("containers-container").style.display = "none";
+    }
+
+    function showContainers() {
+        document.getElementById("images-container").style.display = "none";
+        document.getElementById("containers-container").style.display = "block";
     }
 </script>
 </body>
