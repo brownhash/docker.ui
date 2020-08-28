@@ -8,6 +8,7 @@ import (
 
 func main() {
 
+	http.HandleFunc("/images/deleteImages", internals.ImageDeletionHandler)
 	http.HandleFunc("/images/getImages", internals.ImageHandler)
 	http.HandleFunc("/", internals.DashboardHandler)
 

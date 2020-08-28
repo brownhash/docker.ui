@@ -59,3 +59,40 @@ func ImageHandler(w http.ResponseWriter, request *http.Request) {
 		http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
 	}
 }
+
+func ImageDeletionHandler(w http.ResponseWriter, request *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "POST")
+
+	if request.Method == "POST" {
+		var data map[string][]string
+		decoder := json.NewDecoder(request.Body)
+		err := decoder.Decode(&data)
+
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		for _, id := range data["imageIds"] {
+			_, err := docker.DeleteImage(id)
+
+			if err != nil {
+				http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+				_, err = w.Write([]byte(err.Error()))
+
+				if err != nil {
+					http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+				}
+
+				return
+			}
+		}
+
+		_, err = fmt.Fprintf(w, "ok")
+
+		if err != nil {
+			http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		}
+	}
+}

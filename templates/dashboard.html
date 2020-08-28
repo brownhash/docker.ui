@@ -42,6 +42,7 @@
             <span class="badge badge-dark" id="imageCount"></span> Images acquiring <span class="badge badge-dark" id="imageSize"></span> mb of disk space
         </div>
     </div>
+    <button class="btn btn-danger btn-sm content" onclick="deleteImages()">Delete</button>
     <div id="images"></div>
 </div>
 
@@ -57,6 +58,22 @@
 
 <span id="data"></span>
 <script>
+
+    function post(url, data) {
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify(data));
+
+        xhr.onreadystatechange=function () {
+            if (this.status >= 400 && this.readyState === 4) {
+                alert(this.response);
+            } else if(this.readyState === 4) {
+                alert("Success");
+            }
+        }
+    }
+
     const emptyIdentifier = "---";
     const nullIdentifier = "<none>";
     fetch('/images/getImages')
@@ -125,6 +142,19 @@
     function showContainers() {
         document.getElementById("images-container").style.display = "none";
         document.getElementById("containers-container").style.display = "block";
+    }
+
+    function deleteImages() {
+        let data = document.getElementsByName("imageId");
+        let deletionImages = [];
+
+        for (let i=0; i<data.length; i++) {
+            if (data[i].checked) {
+                deletionImages.push(data[i].value);
+            }
+        }
+
+        post("/images/deleteImages", {"imageIds": deletionImages});
     }
 </script>
 </body>
