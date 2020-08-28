@@ -33,11 +33,11 @@
     <p class="lead">This is a light weight dashboard that will help you to easily manage your local docker setup.</p>
     <hr class="my-4">
     <p>Lets begin,</p>
-    <a class="btn btn-dark btn-lg" href="#" role="button" onclick="showImages()">Images</a> <a class="btn btn-dark btn-lg" href="#" role="button" onclick="showContainers()">Containers</a>
+    <a class="btn btn-outline-primary btn-lg" href="#" role="button" onclick="showImages()">Images</a> <a class="btn btn-outline-primary btn-lg" href="#" role="button" onclick="showContainers()">Containers</a>
 </div>
 
 <div id="images-container" style="display: none">
-    <div class="card">
+    <div class="card content">
         <div class="card-body">
             <span class="badge badge-dark" id="imageCount"></span> Images acquiring <span class="badge badge-dark" id="imageSize"></span> mb of disk space
         </div>
@@ -45,13 +45,13 @@
     <div id="images"></div>
 </div>
 
-<div class="card text-white bg-dark content-holder" id="containers-container" style="display: none">
-    <div class="card-header">
-        Containers
+<div id="containers-container" style="display: none">
+    <div class="card content">
+        <div class="card-body">
+            <span class="badge badge-dark" id="imageCount"></span> Containers
+        </div>
     </div>
-    <div class="card-body">
-        <div id="containers"></div>
-    </div>
+    <div id="containers"></div>
 </div>
 
 
@@ -89,7 +89,9 @@
                     repoTag = emptyIdentifier
                 }
 
-                let creationDate = new Date(imageData.created_at);
+                let date = new Date(0);
+                date.setUTCSeconds(imageData.created_at);
+                let reqDate = date.getDate() + "-" + date.getMonth() + "-" + date.getFullYear() + " @ " + date.getHours() + ":" + date.getMinutes();
 
                 injectData += "<div class=\"card content\" id=\""+ repoName +"\" style=\"width: 18rem; float: left;\">" +
                             "<div class=\"card-header\" style=\"overflow: auto\">" +
@@ -100,10 +102,12 @@
                                     "</label>" +
                                 "</div>" +
                             "</div>" +
-                            "<div class=\"card-body\">" +
-                                "<span class=\"badge badge-primary\">" + repoTag +"</span> <span class=\"badge badge-success\">" + roundSize +" mb</span>" +
+                            "<div class=\"card-body\" style=\"overflow: auto; white-space: nowrap;\">" +
+                                "<span class=\"badge badge-primary\">" + repoTag + "</span> " +
+                                "<span class=\"badge badge-dark\">" + roundSize + " mb</span> " +
+                                "<span class=\"badge badge-dark\">" + reqDate + "</span> " +
                                 "<br /><br />" +
-                                "Image Sha <span class=\"badge badge-primary\">" + imageData.id.split(":")[1].substr(0, 12) +"</span>" +
+                                "Image Sha <span class=\"badge badge-dark\">" + imageData.id.split(":")[1].substr(0, 12) +"</span>" +
                             "</div>" +
                         "</div>";
             }
