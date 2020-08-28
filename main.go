@@ -8,7 +8,7 @@ import (
 
 func main() {
 
-	http.HandleFunc("/images", internals.ImageHandler)
+	http.HandleFunc("/images/getImages", internals.ImageHandler)
 	http.HandleFunc("/", internals.DashboardHandler)
 
 	err := http.ListenAndServe("0.0.0.0:9000", nil)

@@ -59,7 +59,7 @@
 <script>
     const emptyIdentifier = "---";
     const nullIdentifier = "<none>";
-    fetch('/images')
+    fetch('/images/getImages')
         .then(response => response.json())
         .then(data => {
                 setImageData(data);
