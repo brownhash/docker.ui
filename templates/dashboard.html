@@ -43,11 +43,11 @@
         </div>
     </div>
     <button class="btn btn-danger btn-sm content" onclick="deleteImages()">Delete</button>
-    <div class="form-group form-check content">
+    <div class="form-group form-check content" style="float: left">
         <input type="checkbox" name="forceImageDeletion" class="form-check-input" id="forceCheck">
         <label class="form-check-label" for="forceCheck">Force Deletion</label>
     </div>
-    <div class="form-group form-check content">
+    <div class="form-group form-check content" style="float: left">
         <input type="checkbox" name="pruneChildren" class="form-check-input" id="pruneChildrenCheck">
         <label class="form-check-label" for="pruneChildrenCheck">Prune Child Images</label>
     </div>
@@ -63,8 +63,26 @@
     <div id="containers"></div>
 </div>
 
+<div class="modal fade" id="errorModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Alert</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Understood</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-<span id="data"></span>
 <script>
     const emptyIdentifier = "---";
     const nullIdentifier = "<none>";
