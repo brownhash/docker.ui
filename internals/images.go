@@ -2,6 +2,7 @@ package internals
 
 import (
 	"./docker"
+	"./errors"
 	"./modals"
 	"encoding/json"
 	"fmt"
@@ -66,7 +67,7 @@ func ImageDeletionHandler(w http.ResponseWriter, request *http.Request) {
 	w.Header().Set("Access-Control-Allow-Methods", "POST")
 
 	if request.Method == "POST" {
-		var data map[string][]string
+		var data map[string]interface{}
 		decoder := json.NewDecoder(request.Body)
 		err := decoder.Decode(&data)
 
@@ -74,18 +75,17 @@ func ImageDeletionHandler(w http.ResponseWriter, request *http.Request) {
 			fmt.Println(err)
 		}
 
-		for _, id := range data["imageIds"] {
-			_, err := docker.DeleteImage(id)
+		deletionData, err := ConvertToDeletionData(data)
+
+		if err != nil {
+			errors.InternalServerError(w, err)
+		}
+
+		for _, id := range deletionData.ImageIds {
+			_, err := docker.DeleteImage(id, deletionData.Force, deletionData.PruneChildren)
 
 			if err != nil {
-				http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
-				_, err = w.Write([]byte(err.Error()))
-
-				if err != nil {
-					http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
-				}
-
-				return
+				errors.InternalServerError(w, err)
 			}
 		}
 

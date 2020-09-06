@@ -43,6 +43,14 @@
         </div>
     </div>
     <button class="btn btn-danger btn-sm content" onclick="deleteImages()">Delete</button>
+    <div class="form-group form-check content">
+        <input type="checkbox" name="forceImageDeletion" class="form-check-input" id="forceCheck">
+        <label class="form-check-label" for="forceCheck">Force Deletion</label>
+    </div>
+    <div class="form-group form-check content">
+        <input type="checkbox" name="pruneChildren" class="form-check-input" id="pruneChildrenCheck">
+        <label class="form-check-label" for="pruneChildrenCheck">Prune Child Images</label>
+    </div>
     <div id="images"></div>
 </div>
 
@@ -58,6 +66,8 @@
 
 <span id="data"></span>
 <script>
+    const emptyIdentifier = "---";
+    const nullIdentifier = "<none>";
 
     function post(url, data) {
         let xhr = new XMLHttpRequest();
@@ -75,8 +85,6 @@
         }
     }
 
-    const emptyIdentifier = "---";
-    const nullIdentifier = "<none>";
     fetch('/images/getImages')
         .then(response => response.json())
         .then(data => {
@@ -147,7 +155,12 @@
 
     function deleteImages() {
         let data = document.getElementsByName("imageId");
+        let force = document.getElementsByName("forceImageDeletion");
+        let pruneChildren = document.getElementsByName("pruneChildren");
+
         let deletionImages = [];
+        let forceCheck = false;
+        let pruneChildrenCheck = false;
 
         for (let i=0; i<data.length; i++) {
             if (data[i].checked) {
@@ -155,7 +168,15 @@
             }
         }
 
-        post("/images/deleteImages", {"imageIds": deletionImages});
+        if (force[0].checked) {
+            forceCheck = true;
+        }
+
+        if (pruneChildren[0].checked) {
+            pruneChildrenCheck = true;
+        }
+
+        post("/images/deleteImages", {"imageIds": deletionImages, "checks": {"force": forceCheck, "pruneChildren": pruneChildrenCheck}});
     }
 </script>
 </body>

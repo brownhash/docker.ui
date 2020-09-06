@@ -5,7 +5,7 @@ import (
 	"github.com/docker/docker/api/types"
 )
 
-func DeleteImage(imageId string) ([]types.ImageDeleteResponseItem, error) {
+func DeleteImage(imageId string, force bool, pruneChildren bool) ([]types.ImageDeleteResponseItem, error) {
 	ctx := context.Background()
 
 	cli, err := Client()
@@ -15,8 +15,8 @@ func DeleteImage(imageId string) ([]types.ImageDeleteResponseItem, error) {
 	}
 
 	dResponse, err := cli.ImageRemove(ctx, imageId, types.ImageRemoveOptions{
-		Force:         false,
-		PruneChildren: false,
+		Force:         force,
+		PruneChildren: pruneChildren,
 	})
 
 	return dResponse, err

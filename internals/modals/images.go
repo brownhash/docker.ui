@@ -9,3 +9,9 @@ type Image struct {
 	Labels 		map[string]string		`json:"labels"`
 	Containers 	int64					`json:"containers"`
 }
+
+type ImageDeletionData struct {
+	Force 				bool			`json:"force"`
+	PruneChildren 		bool			`json:"prune_children"`
+	ImageIds 			[]string		`json:"image_ids"`
+}
