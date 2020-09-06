@@ -22,7 +22,7 @@
         }
     </style>
 </head>
-<body>
+<body onload="toggleShow()">
 
 <nav class="navbar navbar-dark bg-dark">
     <span class="navbar-brand mb-0 h1">docker.ui</span>
@@ -143,14 +143,31 @@
         document.getElementById("imageSize").innerHTML = totalSize.toString();
     }
 
+    function toggleShow() {
+        let allCookies = document.cookie.split("; ");
+
+        for (let i=0; i<allCookies.length; i++) {
+            let data = allCookies[i].split("=");
+            if (data[0] === "tab") {
+                if (data[1] === "images") {
+                    showImages();
+                } else if (data[1] === "containers") {
+                    showContainers();
+                }
+            }
+        }
+    }
+
     function showImages() {
         document.getElementById("images-container").style.display = "block";
         document.getElementById("containers-container").style.display = "none";
+        document.cookie = "tab=images";
     }
 
     function showContainers() {
         document.getElementById("images-container").style.display = "none";
         document.getElementById("containers-container").style.display = "block";
+        document.cookie = "tab=containers";
     }
 
     function deleteImages() {
