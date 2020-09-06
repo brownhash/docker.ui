@@ -21,18 +21,33 @@
             margin: 10px;
         }
     </style>
+    <title>docker.ui</title>
 </head>
 <body onload="toggleShow()">
 
 <nav class="navbar navbar-dark bg-dark">
-    <span class="navbar-brand mb-0 h1">docker.ui</span>
+    <span class="navbar-brand mb-0 h1">
+        <span onclick="showIntro()">
+            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-info-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+            </svg>
+        </span>
+        docker.ui
+    </span>
 </nav>
 
 <div class="jumbotron">
-    <h1 class="display-4">Welcome to docker.ui</h1>
-    <p class="lead">This is a light weight dashboard that will help you to easily manage your local docker setup.</p>
-    <hr class="my-4">
-    <p>Lets begin,</p>
+    <div id="introHeader">
+        <h1 class="display-4">Welcome to docker.ui</h1>
+        <p class="lead">
+            This is a light weight dashboard that will help you to easily manage your local docker setup.
+            <a href="https://github.com/sharma1612harshit/docker.ui" target="_blank">
+                GitHub
+            </a>
+        </p>
+        <hr class="my-4">
+        <p>Lets begin,</p>
+    </div>
     <a class="btn btn-outline-primary btn-lg" href="#" role="button" onclick="showImages()">Images</a> <a class="btn btn-outline-primary btn-lg" href="#" role="button" onclick="showContainers()">Containers</a>
 </div>
 
@@ -123,6 +138,10 @@
             }
         );
 
+    function showIntro() {
+        document.getElementById("introHeader").style.display = "block";
+    }
+
     function setImageData(data) {
         document.getElementById("imageCount").innerHTML = data.length;
 
@@ -190,12 +209,14 @@
     }
 
     function showImages() {
+        document.getElementById("introHeader").style.display = "none";
         document.getElementById("images-container").style.display = "block";
         document.getElementById("containers-container").style.display = "none";
         document.cookie = "tab=images";
     }
 
     function showContainers() {
+        document.getElementById("introHeader").style.display = "none";
         document.getElementById("images-container").style.display = "none";
         document.getElementById("containers-container").style.display = "block";
         document.cookie = "tab=containers";
