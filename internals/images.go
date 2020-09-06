@@ -43,8 +43,7 @@ func ImageHandler(w http.ResponseWriter, request *http.Request) {
 		imageList, err := images()
 
 		if err != nil {
-			http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
-			fmt.Println(err)
+			errors.InternalServerError(w, err)
 		}
 
 		jsonResponse, _ := json.Marshal(imageList)
@@ -53,11 +52,11 @@ func ImageHandler(w http.ResponseWriter, request *http.Request) {
 		_, err = w.Write(jsonResponse)
 
 		if err != nil {
-			http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+			errors.InternalServerError(w, err)
 		}
 
 	} else {
-		http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
+		errors.MethodNotAllowed(w)
 	}
 }
 
@@ -94,5 +93,7 @@ func ImageDeletionHandler(w http.ResponseWriter, request *http.Request) {
 		if err != nil {
 			http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		}
+	} else {
+		errors.MethodNotAllowed(w)
 	}
 }

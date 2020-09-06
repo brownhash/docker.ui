@@ -1,7 +1,7 @@
 package internals
 
 import (
-	"fmt"
+	"./errors"
 	"html/template"
 	"net/http"
 )
@@ -15,18 +15,14 @@ func DashboardHandler(w http.ResponseWriter, request *http.Request) {
 	if request.Method == "GET" {
 		t, err := template.ParseFiles("templates/dashboard.html")
 		if err != nil {
-			http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
-			fmt.Fprintf(w, "Unable to fetch template:" + err.Error())
-			fmt.Println(err)
+			errors.InternalServerError(w, err)
 		}
 
 		err = t.Execute(w, nil)
 		if err != nil {
-			http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
-			fmt.Fprintf(w, "Unable to render template:" + err.Error())
-			fmt.Println(err)
+			errors.InternalServerError(w, err)
 		}
 	} else {
-		http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
+		errors.MethodNotAllowed(w)
 	}
 }
