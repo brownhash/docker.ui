@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-
+	http.HandleFunc("/containers/getContainers", internals.ContainerHandler)
 	http.HandleFunc("/images/deleteImages", internals.ImageDeletionHandler)
 	http.HandleFunc("/images/getImages", internals.ImageHandler)
 	http.HandleFunc("/", internals.DashboardHandler)
