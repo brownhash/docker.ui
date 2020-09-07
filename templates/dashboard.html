@@ -204,6 +204,7 @@
                     "<span class=\"badge badge-primary\">" + containerData.state + "</span> " +
                     "<span class=\"badge badge-dark\">" + containerData.status + "</span> " +
                     "<br /><br />" +
+                    "Container Id <span class=\"badge badge-dark\">" + containerData.id.substr(0, 12) +"</span><br />" +
                     "Image Sha <span class=\"badge badge-dark\">" + containerData.image_id.split(":")[1].substr(0, 12) +"</span>" +
                 "</div>" +
             "</div>";
