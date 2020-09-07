@@ -31,7 +31,7 @@ func images() ([]modals.Image, error) {
 		imageList = append(imageList, tmp)
 	}
 
-	return imageList, nil
+	return imageList, err
 }
 
 func ImageHandler(w http.ResponseWriter, request *http.Request) {
