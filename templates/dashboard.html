@@ -84,7 +84,7 @@
 <div id="containers-container" style="display: none">
     <div class="card content">
         <div class="card-body">
-            <span class="badge badge-dark" id="imageCount"></span> Containers
+            <span class="badge badge-dark" id="containerCount"></span> Containers
         </div>
     </div>
     <div id="containers"></div>
@@ -110,10 +110,19 @@
         }
     }
 
+    // fetch all images
     fetch('/images/getImages')
         .then(response => response.json())
         .then(data => {
                 setImageData(data);
+            }
+        );
+
+    // fetch all containers
+    fetch('/containers/getContainers')
+        .then(response => response.json())
+        .then(data => {
+            setContainerData(data);
             }
         );
 
@@ -170,6 +179,38 @@
 
         imageArea.innerHTML = injectData;
         document.getElementById("imageSize").innerHTML = totalSize.toString();
+    }
+
+    function setContainerData(data) {
+        document.getElementById("containerCount").innerHTML = data.length;
+
+        let containerArea = document.getElementById("containers");
+
+        let injectData = "";
+
+        for (let i=0; i<data.length; i++) {
+            let containerData = data[i];
+
+            injectData += "<div class=\"card content\" id=\""+ containerData.names.join(' ') +"\" style=\"width: 18rem; float: left;\">" +
+                "<div class=\"card-header\" style=\"overflow: auto\">" +
+                    "<div class=\"form-check form-check-inline\">" +
+                        "<input name=\"containerId\" class=\"form-check-input\" type=\"checkbox\" value=\"" + containerData.id +"\">" +
+                        "<label class=\"form-check-label\" for=\"inlineCheckbox1\">" +
+                            "<span style=\"white-space: nowrap;\">" + containerData.names.join(' ') +"</span>" +
+                        "</label>" +
+                    "</div>" +
+                "</div>" +
+                "<div class=\"card-body\" style=\"overflow: auto; white-space: nowrap;\">" +
+                    "<span class=\"badge badge-primary\">" + containerData.state + "</span> " +
+                    "<span class=\"badge badge-dark\">" + containerData.status + " mb</span> " +
+                    "<br /><br />" +
+                    "Image Sha <span class=\"badge badge-dark\">" + containerData.image_id.split(":")[1].substr(0, 12) +"</span>" +
+                "</div>" +
+            "</div>";
+        }
+
+        containerArea.innerHTML = injectData;
+
     }
 
     function toggleShow() {
