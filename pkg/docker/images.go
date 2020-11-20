@@ -23,3 +23,21 @@ func GetImages() ([]types.ImageSummary, error) {
 
 	return images, err
 }
+
+// Delete specified docker image
+func DeleteImage(imageId string, force bool, pruneChildren bool) ([]types.ImageDelete, error) {
+	ctx := context.Background()
+
+	cli, err := Client()
+
+	if err != nil {
+		return nil, err
+	}
+
+	dResponse, err := cli.ImageRemove(ctx, imageId, types.ImageRemoveOptions{
+		Force:         force,
+		PruneChildren: pruneChildren,
+	})
+
+	return dResponse, err
+}
