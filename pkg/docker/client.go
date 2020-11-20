@@ -1,17 +1,10 @@
+
 package docker
 
-import (
-	"context"
-	"github.com/docker/docker/client"
-)
+import "github.com/docker/docker/client"
 
-func Client() int {
-	ctx := context.Background()
-	client, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
+func Client() (*client.Client, error) {
+	cli, err := client.NewEnvClient()
 
-	if err != nil {
-		panic(err)
-	}
-
-	return client
+	return cli, err
 }
