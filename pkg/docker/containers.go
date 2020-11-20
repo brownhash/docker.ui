@@ -6,8 +6,8 @@ import (
 	"github.com/docker/docker/api/types/filters"
 )
 
-// List local docker images
-func GetImages() ([]types.ImageSummary, error) {
+// List local docker containers
+func GetContainers() ([]types.Container, error) {
 	ctx := context.Background()
 
 	cli, err := Client()
@@ -16,10 +16,16 @@ func GetImages() ([]types.ImageSummary, error) {
 		return nil, err
 	}
 
-	images, err := cli.ImageList(ctx, types.ImageListOptions{
+	list, err := cli.ContainerList(ctx, types.ContainerListOptions{
+		Quiet:   false,
+		Size:    false,
 		All:     true,
+		Latest:  false,
+		Since:   "",
+		Before:  "",
+		Limit:   0,
 		Filters: filters.Args{},
 	})
 
-	return images, err
+	return list, err
 }
