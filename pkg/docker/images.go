@@ -7,7 +7,7 @@ import (
 )
 
 // List local docker images
-func GetImages() ([]types.ImageSummary, error) {
+func GetImages(all bool, filters filters.Args) ([]types.ImageSummary, error) {
 	ctx := context.Background()
 
 	cli, err := Client()
@@ -17,8 +17,8 @@ func GetImages() ([]types.ImageSummary, error) {
 	}
 
 	images, err := cli.ImageList(ctx, types.ImageListOptions{
-		All:     true,
-		Filters: filters.Args{},
+		All:     all,		// true
+		Filters: filters, 	// {}
 	})
 
 	return images, err
@@ -35,8 +35,8 @@ func DeleteImage(imageId string, force bool, pruneChildren bool) ([]types.ImageD
 	}
 
 	dResponse, err := cli.ImageRemove(ctx, imageId, types.ImageRemoveOptions{
-		Force:         force,
-		PruneChildren: pruneChildren,
+		Force:         force,			// false
+		PruneChildren: pruneChildren,	// false
 	})
 
 	return dResponse, err

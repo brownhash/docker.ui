@@ -7,7 +7,7 @@ import (
 )
 
 // List local docker containers
-func GetContainers() ([]types.Container, error) {
+func GetContainers(quiet bool, size bool, all bool, latest bool, since string, before string, limit int, filters filters.Args) ([]types.Container, error) {
 	ctx := context.Background()
 
 	cli, err := Client()
@@ -17,14 +17,14 @@ func GetContainers() ([]types.Container, error) {
 	}
 
 	list, err := cli.ContainerList(ctx, types.ContainerListOptions{
-		Quiet:   false,
-		Size:    false,
-		All:     true,
-		Latest:  false,
-		Since:   "",
-		Before:  "",
-		Limit:   0,
-		Filters: filters.Args{},
+		Quiet:   quiet, 		// false
+		Size:    size, 			// false
+		All:     all, 			// true
+		Latest:  latest, 		// false
+		Since:   since, 		// ""
+		Before:  before, 		// ""
+		Limit:   limit, 		// 0
+		Filters: filters, 		// {}
 	})
 
 	return list, err
