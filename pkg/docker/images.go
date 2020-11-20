@@ -6,6 +6,7 @@ import (
 	"github.com/docker/docker/api/types/filters"
 )
 
+// List local docker images
 func GetImages() ([]types.ImageSummary, error) {
 	ctx := context.Background()
 
