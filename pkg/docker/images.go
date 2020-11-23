@@ -27,13 +27,13 @@ func GetImages(all bool, filters filters.Args) ([]types.ImageSummary, error) {
 }
 
 // Pull specified docker image
-func PullImage(imageRef string, all bool, registryAuth string) (io.ReadCloser, error) {
+func PullImage(imageRef string, all bool, registryAuth string) error {
 	ctx := context.Background()
 
 	cli, err := Client()
 
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	reader, err := cli.ImagePull(ctx, imageRef, types.ImagePullOptions{
@@ -43,7 +43,7 @@ func PullImage(imageRef string, all bool, registryAuth string) (io.ReadCloser, e
 	})
 	io.Copy(os.Stdout, reader)
 
-	return reader, err
+	return err
 }
 
 // Delete specified docker image
