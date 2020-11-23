@@ -5,6 +5,7 @@ import (
 	"context"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/filters"
+	"os"
 )
 
 // List local docker images
@@ -35,13 +36,14 @@ func PullImage(imageRef string, all bool, registryAuth string) (io.ReadCloser, e
 		return nil, err
 	}
 
-	pullResponse, err := cli.ImagePull(ctx, imageRef, types.ImagePullOptions{
+	reader, err := cli.ImagePull(ctx, imageRef, types.ImagePullOptions{
 		All:           all,
 		RegistryAuth:  registryAuth,
 		PrivilegeFunc: nil,
 	})
+	io.Copy(os.Stdout, reader)
 
-	return pullResponse, err
+	return reader, err
 }
 
 // Delete specified docker image
