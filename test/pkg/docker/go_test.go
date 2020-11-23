@@ -8,12 +8,16 @@ import (
 )
 
 func Test(t *testing.T) {
+	// test pull image
+	_, ipErr := docker.PullImage("docker.io/library/golang", false, "")
+	assert.Empty(t, ipErr, "Error occurred while running pkg/docker/PullImage. Error %v.", ipErr)
+
 	// test get images
 	_, iErr := docker.GetImages(true, filters.Args{})
 	assert.Empty(t, iErr, "Error occurred while running pkg/docker/GetImages. Error %v.", iErr)
 
 	// test delete image
-	_, idErr := docker.DeleteImage("test_image_id", false, false)
+	_, idErr := docker.DeleteImage("golang", true, true)
 	assert.Empty(t, idErr, "Error occurred while running pkg/docker/DeleteImage. Error %v.", idErr)
 
 	// test get containers
