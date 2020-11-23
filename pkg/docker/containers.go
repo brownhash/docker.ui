@@ -32,7 +32,7 @@ func GetContainers(quiet bool, size bool, all bool, latest bool, since string, b
 	return list, err
 }
 
-func LaunchContainer(hostName string, domainName string, user string, imageId string, volumes map[string]struct{}, networkDisabled bool, onBuild []string, labels map[string]string, stopSignal string, stopTimeout *int, tty bool, hostConfig *container.HostConfig, networkingConfig *network.NetworkingConfig, containerName string) (container.ContainerCreateCreatedBody, error) {
+func LaunchContainer(containerConfig *container.Config, hostConfig *container.HostConfig, networkingConfig *network.NetworkingConfig, containerName string) (container.ContainerCreateCreatedBody, error) {
 	ctx := context.Background()
 
 	cli, err := Client()
@@ -41,19 +41,7 @@ func LaunchContainer(hostName string, domainName string, user string, imageId st
 		return container.ContainerCreateCreatedBody{}, err
 	}
 
-	launchResponse, err := cli.ContainerCreate(ctx, &container.Config{
-		Hostname:        hostName,
-		Domainname:      domainName,
-		User:            user,
-		Tty:             tty,
-		Image:           imageId,
-		Volumes:         volumes,
-		NetworkDisabled: networkDisabled,
-		OnBuild:         onBuild,
-		Labels:          labels,
-		StopSignal:      stopSignal,
-		StopTimeout:     stopTimeout,
-	}, hostConfig, networkingConfig, containerName)
+	launchResponse, err := cli.ContainerCreate(ctx, containerConfig, hostConfig, networkingConfig, containerName)
 
 	return launchResponse, err
 }
