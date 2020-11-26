@@ -1,9 +1,8 @@
 package main
 
 import (
-	"encoding/json"
 	"github.com/gorilla/mux"
-	"github.com/sharma1612harshit/docker.ui/api/docker"
+	"github.com/sharma1612harshit/docker.ui/api/handler"
 	"log"
 	"net/http"
 	"time"
@@ -11,7 +10,7 @@ import (
 
 func main() {
 	r := mux.NewRouter()
-	r.HandleFunc("/images", ImageHandler)
+	r.HandleFunc("/images", handler.ImagesHandler)
 	http.Handle("/", r)
 
 	srv := &http.Server{
@@ -23,16 +22,4 @@ func main() {
 	}
 
 	log.Fatal(srv.ListenAndServe())
-}
-
-func ImageHandler(w http.ResponseWriter, r *http.Request) {
-	imageResponse, err := json.Marshal(docker.GetImages())
-
-	if err != nil {
-		log.Fatal(err)
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("500 - Something bad happened!"))
-	} else {
-		w.Write([]byte(imageResponse))
-	}
 }
