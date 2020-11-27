@@ -1,14 +1,13 @@
 package docker
 
 import (
-	"github.com/docker/docker/api/types/filters"
 	"github.com/sharma1612harshit/docker.ui/pkg/docker"
 	"log"
 )
 
 // return images data as json map
 func GetImages() map[string][]ImageResponse {
-	images, err := docker.GetImages(true, filters.Args{})
+	images, err := docker.GetImages(true)
 
 	if err != nil {
 		log.Fatal(err)

@@ -13,7 +13,7 @@ func Test(t *testing.T) {
 	assert.Empty(t, ipErr, "Error occurred while running pkg/docker/PullImage. Error %v.", ipErr)
 
 	// test get images
-	_, iErr := docker.GetImages(true, filters.Args{})
+	_, iErr := docker.GetImages(true)
 	assert.Empty(t, iErr, "Error occurred while running pkg/docker/GetImages. Error %v.", iErr)
 
 	// test delete image
