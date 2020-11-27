@@ -8,7 +8,7 @@ import (
 
 func Test(t *testing.T) {
 	// test pull image
-	ipErr := docker.PullImage("docker.io/library/golang", false, "")
+	ipErr := docker.PullImage("docker.io/library/golang", false, "", "")
 	assert.Empty(t, ipErr, "Error occurred while running pkg/docker/PullImage. Error %v.", ipErr)
 
 	// test get images

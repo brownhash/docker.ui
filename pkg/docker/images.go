@@ -2,6 +2,8 @@ package docker
 
 import (
 	"context"
+	"encoding/base64"
+	"encoding/json"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/filters"
 	"io"
@@ -19,7 +21,7 @@ func GetImages(all bool) ([]types.ImageSummary, error) {
 	}
 
 	images, err := cli.ImageList(ctx, types.ImageListOptions{
-		All:     all,		// true
+		All:     all,				// true
 		Filters: filters.Args{}, 	// {}
 	})
 
@@ -27,7 +29,7 @@ func GetImages(all bool) ([]types.ImageSummary, error) {
 }
 
 // Pull specified docker image
-func PullImage(imageRef string, all bool, registryAuth string) error {
+func PullImage(imageRef string, all bool, username string, password string) error {
 	ctx := context.Background()
 
 	cli, err := Client()
@@ -36,9 +38,15 @@ func PullImage(imageRef string, all bool, registryAuth string) error {
 		return err
 	}
 
+	authEncode, err := json.Marshal(types.AuthConfig{
+		Username: username,
+		Password: password,
+	})
+	authStr := base64.URLEncoding.EncodeToString(authEncode)
+
 	reader, err := cli.ImagePull(ctx, imageRef, types.ImagePullOptions{
 		All:           all,
-		RegistryAuth:  registryAuth,
+		RegistryAuth:  authStr,
 		PrivilegeFunc: nil,
 	})
 	io.Copy(os.Stdout, reader)
