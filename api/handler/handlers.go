@@ -9,13 +9,42 @@ import (
 
 // handler for images api
 func ImagesHandler(w http.ResponseWriter, r *http.Request) {
-	imageResponse, err := json.Marshal(docker.GetImages())
+	images, err := docker.GetImages()
 
 	if err != nil {
 		log.Fatal(err)
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte("500 - Something bad happened!"))
 	} else {
-		w.Write([]byte(imageResponse))
+		imageResponse, err := json.Marshal(images)
+
+		if err != nil {
+			log.Fatal(err)
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte("500 - Something bad happened!"))
+		} else {
+			w.Write([]byte(imageResponse))
+		}
+	}
+}
+
+// handler for containers api
+func ContainersHandler(w http.ResponseWriter, r *http.Request) {
+	containers, err := docker.GetContainers()
+
+	if err != nil {
+		log.Fatal(err)
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("500 - Something bad happened!"))
+	} else {
+		containerResponse, err := json.Marshal(containers)
+
+		if err != nil {
+			log.Fatal(err)
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte("500 - Something bad happened!"))
+		} else {
+			w.Write([]byte(containerResponse))
+		}
 	}
 }

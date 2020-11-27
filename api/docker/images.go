@@ -6,11 +6,14 @@ import (
 )
 
 // return images data as json map
-func GetImages() map[string][]ImageResponse {
+func GetImages() (map[string][]ImageResponse, error) {
 	images, err := docker.GetImages(true)
+
+	var response = map[string][]ImageResponse{}
 
 	if err != nil {
 		log.Fatal(err)
+		return response, err
 	}
 
 	var imageList []ImageResponse
@@ -28,9 +31,7 @@ func GetImages() map[string][]ImageResponse {
 		})
 	}
 
-	response := map[string][]ImageResponse{
-		"images": imageList,
-	}
+	response["images"] = imageList
 
-	return response
+	return response, err
 }
