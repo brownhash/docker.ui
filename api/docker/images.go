@@ -6,17 +6,15 @@ import (
 )
 
 // return images data as json map
-func GetImages() (map[string][]ImageResponse, error) {
+func GetImages() ([]ImageResponse, error) {
 	images, err := docker.GetImages(true)
 
-	var response = map[string][]ImageResponse{}
+	var imageList = make([]ImageResponse, 0)
 
 	if err != nil {
 		log.Fatal(err)
-		return response, err
+		return imageList, err
 	}
-
-	var imageList []ImageResponse
 
 	for _, data := range images {
 		imageList = append(imageList, ImageResponse{
@@ -31,7 +29,5 @@ func GetImages() (map[string][]ImageResponse, error) {
 		})
 	}
 
-	response["images"] = imageList
-
-	return response, err
+	return imageList, err
 }

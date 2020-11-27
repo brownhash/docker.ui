@@ -6,17 +6,15 @@ import (
 )
 
 // return containers data as json map
-func GetContainers() (map[string][]ContainerResponse, error) {
+func GetContainers() ([]ContainerResponse, error) {
 	containers, err := docker.GetContainers(false, false, true, false, "", "", 0)
 
-	var response = map[string][]ContainerResponse{}
+	var containerList = make([]ContainerResponse, 0)
 
 	if err != nil {
 		log.Fatal(err)
-		return response, err
+		return containerList, err
 	}
-
-	var containerList []ContainerResponse
 
 	for _, data := range containers {
 		containerList = append(containerList, ContainerResponse{
@@ -36,7 +34,5 @@ func GetContainers() (map[string][]ContainerResponse, error) {
 		})
 	}
 
-	response["containers"] = containerList
-
-	return response, err
+	return containerList, err
 }
