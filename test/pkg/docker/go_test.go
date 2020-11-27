@@ -1,7 +1,6 @@
 package docker
 
 import (
-	"github.com/docker/docker/api/types/filters"
 	"github.com/sharma1612harshit/docker.ui/pkg/docker"
 	"github.com/stretchr/testify/assert"
 	"testing"
@@ -21,6 +20,6 @@ func Test(t *testing.T) {
 	assert.Empty(t, idErr, "Error occurred while running pkg/docker/DeleteImage. Error %v.", idErr)
 
 	// test get containers
-	_, cErr := docker.GetContainers(false, false, true, false, "", "", 0, filters.Args{})
+	_, cErr := docker.GetContainers(false, false, true, false, "", "", 0)
 	assert.Empty(t, cErr, "Error occurred while running pkg/docker/GetContainers. Error %v.", cErr)
 }
