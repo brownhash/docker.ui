@@ -11,7 +11,7 @@ import (
 )
 
 // List local docker images
-func GetImages(all bool) ([]types.ImageSummary, error) {
+func GetImages(all bool, filter filters.Args) ([]types.ImageSummary, error) {
 	ctx := context.Background()
 
 	cli, err := Client()
@@ -22,7 +22,7 @@ func GetImages(all bool) ([]types.ImageSummary, error) {
 
 	images, err := cli.ImageList(ctx, types.ImageListOptions{
 		All:     all,				// true
-		Filters: filters.Args{}, 	// {}
+		Filters: filter, 	// {}
 	})
 
 	return images, err

@@ -1,13 +1,26 @@
 package docker
 
 import (
+	"encoding/json"
+	"github.com/docker/docker/api/types/filters"
 	"github.com/sharma1612harshit/docker.ui/pkg/docker"
 	"log"
 )
 
 // return images data as json map
-func GetImages() ([]ImageResponse, error) {
-	images, err := docker.GetImages(true)
+func GetImages(all string, filter string) ([]ImageResponse, error) {
+	allImages := false
+	searchFilters := map[string]map[string]bool{}
+
+	if all == "true" {
+		allImages = true
+	}
+
+	json.Unmarshal([]byte(filter), &searchFilters)
+
+	log.Print(searchFilters, filter)
+
+	images, err := docker.GetImages(allImages, filters.Args{})
 
 	var imageList = make([]ImageResponse, 0)
 

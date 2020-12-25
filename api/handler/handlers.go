@@ -9,7 +9,7 @@ import (
 
 // handler for images api
 func ImagesHandler(w http.ResponseWriter, r *http.Request) {
-	images, err := docker.GetImages()
+	images, err := docker.GetImages(r.Header.Get("all"), r.Header.Get("filters"))
 
 	if err != nil {
 		log.Fatal(err)
