@@ -42,6 +42,11 @@ func PullImage(imageRef string, all bool, username string, password string) erro
 		Username: username,
 		Password: password,
 	})
+
+	if err != nil {
+		return err
+	}
+
 	authStr := base64.URLEncoding.EncodeToString(authEncode)
 
 	reader, err := cli.ImagePull(ctx, imageRef, types.ImagePullOptions{
@@ -49,7 +54,11 @@ func PullImage(imageRef string, all bool, username string, password string) erro
 		RegistryAuth:  authStr,
 		PrivilegeFunc: nil,
 	})
-	io.Copy(os.Stdout, reader)
+
+	if err != nil {
+		return err
+	}
+	_, err = io.Copy(os.Stdout, reader)
 
 	return err
 }
