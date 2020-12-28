@@ -17,11 +17,7 @@ func GetImages(all, filter string) ([]ImageResponse, error) {
 		allImages = true
 	}
 
-	err := json.Unmarshal([]byte(filter), &searchFilters)
-
-	if err != nil {
-		log.Print(err)
-	}
+	json.Unmarshal([]byte(filter), &searchFilters)
 
 	// add filters to filter var
 	var searchFilter = filters.NewArgs()
@@ -32,7 +28,7 @@ func GetImages(all, filter string) ([]ImageResponse, error) {
 				searchFilter.Add(key, fmt.Sprintf("{\"%s\":%v}",name, boolean))
 			}
 		} else {
-			log.Print(key)
+			log.Print("Invalid filter passed: ", key)
 		}
 	}
 
@@ -59,4 +55,20 @@ func GetImages(all, filter string) ([]ImageResponse, error) {
 	}
 
 	return imageList, err
+}
+
+func PullImage(all, reference, username, password string) (string, error) {
+	allImages := false
+
+	if all == "true" {
+		allImages = true
+	}
+
+	err := docker.PullImage(reference, allImages, username, password)
+
+	if err != nil {
+		return fmt.Sprintf("Error Downloading: %s", reference), err
+	}
+
+	return fmt.Sprintf("Downloaded: %s", reference), err
 }

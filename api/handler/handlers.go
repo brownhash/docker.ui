@@ -2,9 +2,11 @@ package handler
 
 import (
 	"encoding/json"
-	"github.com/sharma1612harshit/docker.ui/api/docker"
+	"fmt"
 	"log"
 	"net/http"
+
+	"github.com/sharma1612harshit/docker.ui/api/docker"
 )
 
 // handler for images api
@@ -25,6 +27,19 @@ func ImagesHandler(w http.ResponseWriter, r *http.Request) {
 		} else {
 			w.Write([]byte(imageResponse))
 		}
+	}
+}
+
+// handler for pull image api
+func PullImageHandler(w http.ResponseWriter, r *http.Request) {
+	status, err := docker.PullImage(r.Header.Get("all"), r.Header.Get("imageref"), r.Header.Get("username"), r.Header.Get("password"))
+
+	if err != nil {
+		log.Print(err)
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(fmt.Sprintf("%s - %s", status, err)))
+	} else {
+		w.Write([]byte(status))
 	}
 }
 
