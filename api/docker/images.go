@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-
 	"github.com/docker/docker/api/types/filters"
 	"github.com/sharma1612harshit/docker.ui/pkg/docker"
 )
