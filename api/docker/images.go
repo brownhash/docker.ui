@@ -27,8 +27,12 @@ func GetImages(all, filter string) ([]ImageResponse, error) {
 	var searchFilter = filters.NewArgs()
 	
 	for key, value := range(searchFilters) {
-		for name, boolean := range(value) {
-			searchFilter.Add(key, fmt.Sprintf("{\"%s\":%v}",name, boolean))
+		if key == "label" || key == "created" {
+			for name, boolean := range(value) {
+				searchFilter.Add(key, fmt.Sprintf("{\"%s\":%v}",name, boolean))
+			}
+		} else {
+			log.Print(key)
 		}
 	}
 
@@ -37,7 +41,7 @@ func GetImages(all, filter string) ([]ImageResponse, error) {
 	var imageList = make([]ImageResponse, 0)
 
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 		return imageList, err
 	}
 

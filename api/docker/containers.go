@@ -12,7 +12,7 @@ func GetContainers() ([]ContainerResponse, error) {
 	var containerList = make([]ContainerResponse, 0)
 
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 		return containerList, err
 	}
 
