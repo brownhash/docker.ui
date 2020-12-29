@@ -9,7 +9,7 @@ import (
 )
 
 // List local docker containers
-func GetContainers(quiet bool, size bool, all bool, latest bool, since string, before string, limit int) ([]types.Container, error) {
+func GetContainers(quiet, size, all, latest bool, since, before string, limit int) ([]types.Container, error) {
 	ctx := context.Background()
 
 	cli, err := Client()

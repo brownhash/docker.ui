@@ -29,7 +29,7 @@ func GetImages(all bool, filter filters.Args) ([]types.ImageSummary, error) {
 }
 
 // Pull specified docker image
-func PullImage(imageRef string, all bool, username string, password string) error {
+func PullImage(imageRef string, all bool, username, password string) error {
 	ctx := context.Background()
 
 	cli, err := Client()
@@ -64,7 +64,7 @@ func PullImage(imageRef string, all bool, username string, password string) erro
 }
 
 // Delete specified docker image
-func DeleteImage(imageId string, force bool, pruneChildren bool) ([]types.ImageDelete, error) {
+func DeleteImage(imageId string, force, pruneChildren bool) ([]types.ImageDelete, error) {
 	ctx := context.Background()
 
 	cli, err := Client()
