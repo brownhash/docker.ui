@@ -67,3 +67,25 @@ func ContainersHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 }
+
+func LaunchContainerHandler(w http.ResponseWriter, r *http.Request) {
+	launchResponse, err := docker.RunContainer(r.Header.Get("name"), r.Header.Get("image_name"), "", "", "", []string{}, []string{}, map[string]string{})
+
+	if err != nil {
+		log.Print(err)
+
+		w.WriteHeader(http.StatusInternalServerError)
+		_, _ = w.Write([]byte(fmt.Sprintf("%s", err)))
+	} else {
+		response, err := json.Marshal(launchResponse)
+
+		if err != nil {
+			log.Print(err)
+
+			w.WriteHeader(http.StatusInternalServerError)
+			_, _ = w.Write([]byte(fmt.Sprintf("%s", err)))
+		} else {
+			_, _ = w.Write(response)
+		}
+	}
+}
