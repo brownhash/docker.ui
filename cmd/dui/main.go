@@ -26,10 +26,10 @@ func main() {
 		log.Print("Initiating docker.ui worker node...")
 
 		http.HandleFunc("/images", handler.ImagesHandler)
-		http.HandleFunc("/pullimage", handler.PullImageHandler)
+		http.HandleFunc("/pull_image", handler.PullImageHandler)
 
 		http.HandleFunc("/containers", handler.ContainersHandler)
-		http.HandleFunc("/runcontainer", handler.LaunchContainerHandler)
+		http.HandleFunc("/run_container", handler.LaunchContainerHandler)
 
 		log.Fatal(http.ListenAndServe(fmt.Sprintf("%s:%s", nodeAddr, workerPort), nil))
 	} else if *c || *control {
