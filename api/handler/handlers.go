@@ -3,10 +3,9 @@ package handler
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/sharma1612harshit/docker.ui/api/docker"
 	"log"
 	"net/http"
-
-	"github.com/sharma1612harshit/docker.ui/api/docker"
 )
 
 // handler for images api
@@ -15,17 +14,19 @@ func ImagesHandler(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		log.Print(err)
+
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("500 - Something bad happened!"))
+		_, _ = w.Write([]byte("500 - Something bad happened!"))
 	} else {
 		imageResponse, err := json.Marshal(images)
 
 		if err != nil {
 			log.Print(err)
+
 			w.WriteHeader(http.StatusInternalServerError)
-			w.Write([]byte("500 - Something bad happened!"))
+			_, _ = w.Write([]byte("500 - Something bad happened!"))
 		} else {
-			w.Write([]byte(imageResponse))
+			_, _ = w.Write(imageResponse)
 		}
 	}
 }
@@ -36,10 +37,11 @@ func PullImageHandler(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		log.Print(err)
+
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(fmt.Sprintf("%s - %s", status, err)))
+		_, _ = w.Write([]byte(fmt.Sprintf("%s - %s", status, err)))
 	} else {
-		w.Write([]byte(status))
+		_, _ = w.Write([]byte(status))
 	}
 }
 
@@ -49,17 +51,19 @@ func ContainersHandler(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		log.Print(err)
+
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("500 - Something bad happened!"))
+		_, _ = w.Write([]byte(fmt.Sprintf("%s", err)))
 	} else {
 		containerResponse, err := json.Marshal(containers)
 
 		if err != nil {
 			log.Print(err)
+
 			w.WriteHeader(http.StatusInternalServerError)
-			w.Write([]byte("500 - Something bad happened!"))
+			_, _ = w.Write([]byte(fmt.Sprintf("%s", err)))
 		} else {
-			w.Write([]byte(containerResponse))
+			_, _ = w.Write(containerResponse)
 		}
 	}
 }
