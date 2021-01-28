@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/sharma1612harshit/docker.ui/api/docker"
-	"log"
+	"github.com/sharma1612harshit/docker.ui/pkg/logger"
 	"net/http"
 )
 
@@ -14,7 +14,7 @@ func ImagesHandler(w http.ResponseWriter, r *http.Request) {
 		images, err := docker.GetImages(r.Header.Get("all"), r.Header.Get("filters"))
 
 		if err != nil {
-			log.Print(err)
+			logger.Warn(err)
 
 			w.WriteHeader(http.StatusInternalServerError)
 			_, _ = w.Write([]byte("500 - Something bad happened!"))
@@ -22,7 +22,7 @@ func ImagesHandler(w http.ResponseWriter, r *http.Request) {
 			imageResponse, err := json.Marshal(images)
 
 			if err != nil {
-				log.Print(err)
+				logger.Warn(err)
 
 				w.WriteHeader(http.StatusInternalServerError)
 				_, _ = w.Write([]byte("500 - Something bad happened!"))
@@ -42,7 +42,7 @@ func PullImageHandler(w http.ResponseWriter, r *http.Request) {
 		status, err := docker.PullImage(r.Header.Get("all"), r.Header.Get("imageref"), r.Header.Get("username"), r.Header.Get("password"))
 
 		if err != nil {
-			log.Print(err)
+			logger.Warn(err)
 
 			w.WriteHeader(http.StatusInternalServerError)
 			_, _ = w.Write([]byte(fmt.Sprintf("%s - %s", status, err)))
@@ -60,7 +60,7 @@ func ContainersHandler(w http.ResponseWriter, r *http.Request) {
 	containers, err := docker.GetContainers()
 
 	if err != nil {
-		log.Print(err)
+		logger.Warn(err)
 
 		w.WriteHeader(http.StatusInternalServerError)
 		_, _ = w.Write([]byte(fmt.Sprintf("%s", err)))
@@ -68,7 +68,7 @@ func ContainersHandler(w http.ResponseWriter, r *http.Request) {
 		containerResponse, err := json.Marshal(containers)
 
 		if err != nil {
-			log.Print(err)
+			logger.Warn(err)
 
 			w.WriteHeader(http.StatusInternalServerError)
 			_, _ = w.Write([]byte(fmt.Sprintf("%s", err)))
@@ -83,7 +83,7 @@ func LaunchContainerHandler(w http.ResponseWriter, r *http.Request) {
 	launchResponse, err := docker.RunContainer(r.Header.Get("name"), r.Header.Get("image_name"), "", "", "", []string{}, []string{}, map[string]string{})
 
 	if err != nil {
-		log.Print(err)
+		logger.Warn(err)
 
 		w.WriteHeader(http.StatusInternalServerError)
 		_, _ = w.Write([]byte(fmt.Sprintf("%s", err)))
@@ -91,7 +91,7 @@ func LaunchContainerHandler(w http.ResponseWriter, r *http.Request) {
 		response, err := json.Marshal(launchResponse)
 
 		if err != nil {
-			log.Print(err)
+			logger.Warn(err)
 
 			w.WriteHeader(http.StatusInternalServerError)
 			_, _ = w.Write([]byte(fmt.Sprintf("%s", err)))
