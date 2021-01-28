@@ -15,10 +15,13 @@ const(
 
 func main() {
 	c := flag.Bool("c", false, "use -c to start dui controller node")
-	control := flag.Bool("control", false, "use -control to start dui controller node")
+	control := flag.Bool("controler", false, "use -control to start dui controller node")
 
 	w := flag.Bool("w", false, "use -w to start dui worker node")
-	work := flag.Bool("work", false, "use -work to start dui worker node")
+	work := flag.Bool("worker", false, "use -work to start dui worker node")
+
+	logLevel := flag.String("logLevel", "INFO", "use -logLevel to indicate logging level. DEBUG | INFO | WARNING | ERROR")
+	logger.SetLogLevel(*logLevel)
 
 	flag.Parse()
 
