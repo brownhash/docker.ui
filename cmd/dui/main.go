@@ -22,6 +22,8 @@ func main() {
 
 	flag.Parse()
 
+	// util.OpenLogFile(util.LogPath)
+
 	if *w || *work {
 		logger.Info("Initiating docker.ui worker node...")
 
@@ -31,7 +33,9 @@ func main() {
 		http.HandleFunc("/containers", handler.ContainersHandler)
 		http.HandleFunc("/run_container", handler.LaunchContainerHandler)
 
-		logger.Error(http.ListenAndServe(fmt.Sprintf("%s:%s", nodeAddr, workerPort), nil))
+		err := http.ListenAndServe(fmt.Sprintf("%s:%s", nodeAddr, workerPort), logger.LogRequest(http.DefaultServeMux))
+		logger.Error(err)
+
 	} else if *c || *control {
 		logger.Info("Server not yet coded...")
 	}
