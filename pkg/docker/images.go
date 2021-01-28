@@ -6,17 +6,19 @@ import (
 	"encoding/json"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/filters"
+	"github.com/sharma1612harshit/docker.ui/pkg/logger"
 	"io"
 	"os"
 )
 
-// List local docker images
+// GetImages - List local docker images
 func GetImages(all bool, filter filters.Args) ([]types.ImageSummary, error) {
 	ctx := context.Background()
 
 	cli, err := Client()
 
 	if err != nil {
+		logger.Debug(err)
 		return nil, err
 	}
 
@@ -25,16 +27,19 @@ func GetImages(all bool, filter filters.Args) ([]types.ImageSummary, error) {
 		Filters: filter, 	// {}
 	})
 
+	logger.Debug(err)
+
 	return images, err
 }
 
-// Pull specified docker image
+// PullImage - Pull specified docker image
 func PullImage(imageRef string, all bool, username, password string) error {
 	ctx := context.Background()
 
 	cli, err := Client()
 
 	if err != nil {
+		logger.Debug(err)
 		return err
 	}
 
@@ -44,6 +49,7 @@ func PullImage(imageRef string, all bool, username, password string) error {
 	})
 
 	if err != nil {
+		logger.Debug(err)
 		return err
 	}
 
@@ -56,27 +62,33 @@ func PullImage(imageRef string, all bool, username, password string) error {
 	})
 
 	if err != nil {
+		logger.Debug(err)
 		return err
 	}
 	_, err = io.Copy(os.Stdout, reader)
 
+	logger.Debug(err)
+
 	return err
 }
 
-// Delete specified docker image
-func DeleteImage(imageId string, force, pruneChildren bool) ([]types.ImageDelete, error) {
+// DeleteImage - Delete specified docker image
+func DeleteImage(imageID string, force, pruneChildren bool) ([]types.ImageDelete, error) {
 	ctx := context.Background()
 
 	cli, err := Client()
 
 	if err != nil {
+		logger.Debug(err)
 		return nil, err
 	}
 
-	dResponse, err := cli.ImageRemove(ctx, imageId, types.ImageRemoveOptions{
+	dResponse, err := cli.ImageRemove(ctx, imageID, types.ImageRemoveOptions{
 		Force:         force,			// false
 		PruneChildren: pruneChildren,	// false
 	})
+
+	logger.Debug(err)
 
 	return dResponse, err
 }

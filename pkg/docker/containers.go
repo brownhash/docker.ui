@@ -6,15 +6,17 @@ import (
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/api/types/filters"
 	"github.com/docker/docker/api/types/network"
+	"github.com/sharma1612harshit/docker.ui/pkg/logger"
 )
 
-// List local docker containers
+// GetContainers - List local docker containers
 func GetContainers(quiet, size, all, latest bool, since, before string, limit int) ([]types.Container, error) {
 	ctx := context.Background()
 
 	cli, err := Client()
 
 	if err != nil {
+		logger.Debug(err)
 		return nil, err
 	}
 
@@ -28,20 +30,26 @@ func GetContainers(quiet, size, all, latest bool, since, before string, limit in
 		Limit:   limit, 			// 0
 		Filters: filters.Args{}, 	// {}
 	})
+	
+	logger.Debug(err)
 
 	return list, err
 }
 
+// LaunchContainer - launch a conatiner
 func LaunchContainer(containerConfig *container.Config, hostConfig *container.HostConfig, networkingConfig *network.NetworkingConfig, containerName string) (container.ContainerCreateCreatedBody, error) {
 	ctx := context.Background()
 
 	cli, err := Client()
 
 	if err != nil {
+		logger.Debug(err)
 		return container.ContainerCreateCreatedBody{}, err
 	}
 
 	launchResponse, err := cli.ContainerCreate(ctx, containerConfig, hostConfig, networkingConfig, containerName)
+	
+	logger.Debug(err)
 
 	return launchResponse, err
 }
