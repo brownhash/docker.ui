@@ -4,8 +4,8 @@ import (
 	"flag"
 	"fmt"
 	"github.com/sharma1612harshit/docker.ui/api/handler"
-	"github.com/sharma1612harshit/docker.ui/pkg/logger"
 	"github.com/sharma1612harshit/docker.ui/pkg/config"
+	"github.com/sharma1612harshit/docker.ui/pkg/logger"
 	"net/http"
 )
 
