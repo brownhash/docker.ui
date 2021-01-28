@@ -27,7 +27,9 @@ func GetImages(all bool, filter filters.Args) ([]types.ImageSummary, error) {
 		Filters: filter, 	// {}
 	})
 
-	logger.Debug(err)
+	if err != nil {
+		logger.Debug(err)
+	}
 
 	return images, err
 }
@@ -67,7 +69,9 @@ func PullImage(imageRef string, all bool, username, password string) error {
 	}
 	_, err = io.Copy(os.Stdout, reader)
 
-	logger.Debug(err)
+	if err != nil {
+		logger.Debug(err)
+	}
 
 	return err
 }
@@ -88,7 +92,9 @@ func DeleteImage(imageID string, force, pruneChildren bool) ([]types.ImageDelete
 		PruneChildren: pruneChildren,	// false
 	})
 
-	logger.Debug(err)
+	if err != nil {
+		logger.Debug(err)
+	}
 
 	return dResponse, err
 }

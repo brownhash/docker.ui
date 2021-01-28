@@ -8,7 +8,9 @@ import (
 // Client - return docker sdk client
 func Client() (*client.Client, error) {
 	cli, err := client.NewEnvClient()
-	logger.Debug(err)
+	if err != nil {
+		logger.Debug(err)
+	}
 
 	return cli, err
 }

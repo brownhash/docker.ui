@@ -114,5 +114,9 @@ func RunContainer(containerName, imageName, hostName, domainName, user string, c
 
 	resp, err := docker.LaunchContainer(containerConf, hostConf, netConf, containerName)
 
+	if err != nil {
+		logger.Warn(err)
+	}
+
 	return resp, err
 }

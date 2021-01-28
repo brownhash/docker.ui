@@ -31,7 +31,9 @@ func GetContainers(quiet, size, all, latest bool, since, before string, limit in
 		Filters: filters.Args{}, 	// {}
 	})
 	
-	logger.Debug(err)
+	if err != nil {
+		logger.Debug(err)
+	}
 
 	return list, err
 }
@@ -49,7 +51,9 @@ func LaunchContainer(containerConfig *container.Config, hostConfig *container.Ho
 
 	launchResponse, err := cli.ContainerCreate(ctx, containerConfig, hostConfig, networkingConfig, containerName)
 	
-	logger.Debug(err)
+	if err != nil {
+		logger.Debug(err)
+	}
 
 	return launchResponse, err
 }
