@@ -1,6 +1,7 @@
 package docker
 
 import (
+	"fmt"
 	"context"
 	"encoding/base64"
 	"encoding/json"
@@ -13,7 +14,7 @@ import (
 
 // GetImages - List local docker images
 func GetImages(all bool, filter filters.Args) ([]types.ImageSummary, error) {
-	logger.Debug("Initiating GetImages")
+	logger.Debug(fmt.Sprintf("Initiating GetImages with \nall: %v, \nfilter: %v", all, filter))
 
 	logger.Debug("Initiating background context")
 	ctx := context.Background()
@@ -41,7 +42,7 @@ func GetImages(all bool, filter filters.Args) ([]types.ImageSummary, error) {
 
 // PullImage - Pull specified docker image
 func PullImage(imageRef string, all bool, username, password string) error {
-	logger.Debug("Initiating PullImage")
+	logger.Debug(fmt.Sprintf("Initiating PullImage with \nimageRef: %v, \nall: %v, \nusername: %v, \npassword: %v", imageRef, all, username, password))
 
 	logger.Debug("Initiating background context")
 	ctx := context.Background()
@@ -90,7 +91,7 @@ func PullImage(imageRef string, all bool, username, password string) error {
 
 // DeleteImage - Delete specified docker image
 func DeleteImage(imageID string, force, pruneChildren bool) ([]types.ImageDelete, error) {
-	logger.Debug("Initiating DeleteImage")
+	logger.Debug(fmt.Sprintf("Initiating DeleteImage with \nimageID: %v, \nforce: %v, \npruneChildren: %v", imageID, force, pruneChildren))
 
 	logger.Debug("Initiating background context")
 	ctx := context.Background()

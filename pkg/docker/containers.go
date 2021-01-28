@@ -1,6 +1,7 @@
 package docker
 
 import (
+	"fmt"
 	"context"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
@@ -11,7 +12,7 @@ import (
 
 // GetContainers - List local docker containers
 func GetContainers(quiet, size, all, latest bool, since, before string, limit int) ([]types.Container, error) {
-	logger.Debug("Initiating GetContainers")
+	logger.Debug(fmt.Sprintf("Initiating GetContainers with \nquiet: %v, \nsize: %v, \nall: %v, \nlatest: %v, \nsince: %v, \nbefore: %v, \nlimit: %v", quiet, size, all, latest, since, before, limit))
 
 	logger.Debug("Initiating background context")
 	ctx := context.Background()
@@ -45,7 +46,7 @@ func GetContainers(quiet, size, all, latest bool, since, before string, limit in
 
 // LaunchContainer - launch a conatiner
 func LaunchContainer(containerConfig *container.Config, hostConfig *container.HostConfig, networkingConfig *network.NetworkingConfig, containerName string) (container.ContainerCreateCreatedBody, error) {
-	logger.Debug("Initiating LaunchContainer")
+	logger.Debug(fmt.Sprintf("Initiating LaunchContainer with \ncontainerConfig: %v, \nhostConfig: %v, \nnetworkingConfig: %v, \ncontainerName: %v", containerConfig, hostConfig, networkingConfig, containerName))
 
 	logger.Debug("Initiating background context")
 	ctx := context.Background()
