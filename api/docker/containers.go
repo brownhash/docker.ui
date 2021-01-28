@@ -8,7 +8,7 @@ import (
 	"github.com/sharma1612harshit/docker.ui/pkg/logger"
 )
 
-// return containers data as json map
+// GetContainers - return containers data as json map
 func GetContainers() ([]duiTypes.ContainerResponse, error) {
 	containers, err := docker.GetContainers(false, false, true, false, "", "", 0)
 
@@ -40,7 +40,7 @@ func GetContainers() ([]duiTypes.ContainerResponse, error) {
 	return containerList, err
 }
 
-// run a container with specified configuration
+// RunContainer - run a container with specified configuration
 func RunContainer(containerName, imageName, hostName, domainName, user string, cmd, entryPoint []string, labels map[string]string) (container.ContainerCreateCreatedBody, error) {
 	containerConf := &container.Config{
 		Hostname:        hostName,
