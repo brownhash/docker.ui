@@ -6,6 +6,7 @@ import (
 	"github.com/sharma1612harshit/docker.ui/api/handler"
 	"github.com/sharma1612harshit/docker.ui/pkg/logger"
 	"net/http"
+	"os"
 )
 
 const(
@@ -21,13 +22,15 @@ func main() {
 	work := flag.Bool("worker", false, "use -work to start dui worker node")
 
 	logLevel := flag.String("logLevel", "INFO", "use -logLevel to indicate logging level. DEBUG | INFO | WARNING | ERROR")
-	logger.SetLogLevel(*logLevel)
 
 	flag.Parse()
+
+	logger.SetLogLevel(*logLevel)
 
 	// util.OpenLogFile(util.LogPath)
 
 	if *w || *work {
+		logger.Info(os.Getenv("DUI_LOGGING_LEVEL"))
 		logger.Info("Initiating docker.ui worker node...")
 
 		http.HandleFunc("/images", handler.ImagesHandler)
