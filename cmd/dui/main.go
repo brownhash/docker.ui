@@ -5,13 +5,8 @@ import (
 	"fmt"
 	"github.com/sharma1612harshit/docker.ui/api/handler"
 	"github.com/sharma1612harshit/docker.ui/pkg/logger"
+	"github.com/sharma1612harshit/docker.ui/pkg/config"
 	"net/http"
-	"os"
-)
-
-const(
-	nodeAddr = "0.0.0.0"
-	workerPort = "8080"
 )
 
 func main() {
@@ -27,10 +22,8 @@ func main() {
 
 	logger.SetLogLevel(*logLevel)
 
-	// util.OpenLogFile(util.LogPath)
-
 	if *w || *work {
-		logger.Info(os.Getenv("DUI_LOGGING_LEVEL"))
+		logger.Success(config.DuiLogo)
 		logger.Info("Initiating docker.ui worker node...")
 
 		http.HandleFunc("/images", handler.ImagesHandler)
@@ -39,10 +32,11 @@ func main() {
 		http.HandleFunc("/containers", handler.ContainersHandler)
 		http.HandleFunc("/run_container", handler.LaunchContainerHandler)
 
-		err := http.ListenAndServe(fmt.Sprintf("%s:%s", nodeAddr, workerPort), logger.LogRequest(http.DefaultServeMux))
+		err := http.ListenAndServe(fmt.Sprintf("%s:%s", config.NodeAddr, config.WorkerPort), logger.LogRequest(http.DefaultServeMux))
 		logger.Error(err)
 
 	} else if *c || *control {
+		logger.Success(config.DuiLogo)
 		logger.Info("Server not yet coded...")
 	}
 }
