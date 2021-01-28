@@ -5,6 +5,7 @@ import (
 	"log"
 	"fmt"
 	"net/http"
+	"runtime"
 )
 
 const (
@@ -26,16 +27,32 @@ func getLogLevel() string {
 
 // Debug - log debugging messages
 func Debug(message interface{}) {
+	var fileInfo string = ""
+
+	_, file, lineNum, ok := runtime.Caller(1)
+
+	if ok {
+		fileInfo = fmt.Sprintf(SuccessColor, fmt.Sprintf("%s::%d", file, lineNum))
+	}
+
 	if getLogLevel() == "DEBUG" {
-		formatter := fmt.Sprintf(DebugColor, message)
+		formatter := fmt.Sprintf("%s %s", fileInfo, fmt.Sprintf(DebugColor, message))
 		log.Println(formatter)
 	}
 }
 
 // Debugf - log debugging messages in same line
 func Debugf(message interface{}) {
+	var fileInfo string = ""
+	
+	_, file, lineNum, ok := runtime.Caller(1)
+
+	if ok {
+		fileInfo = fmt.Sprintf(SuccessColor, fmt.Sprintf("%s::%d", file, lineNum))
+	}
+
 	if getLogLevel() == "DEBUG" {
-		formatter := fmt.Sprintf(DebugColor, message)
+		formatter := fmt.Sprintf("%s %s", fileInfo, fmt.Sprintf(DebugColor, message))
 		log.Printf(formatter)
 	}
 }
