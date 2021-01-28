@@ -6,10 +6,10 @@ import (
 	"github.com/docker/docker/api/types/filters"
 	duiTypes "github.com/sharma1612harshit/docker.ui/api/types"
 	"github.com/sharma1612harshit/docker.ui/pkg/docker"
-	"log"
+	"github.com/sharma1612harshit/docker.ui/pkg/logger"
 )
 
-// return images data as json map
+// GetImages - return images data as json map
 func GetImages(all, filter string) ([]duiTypes.ImageResponse, error) {
 	allImages := false
 	searchFilters := map[string]map[string]bool{}
@@ -29,7 +29,7 @@ func GetImages(all, filter string) ([]duiTypes.ImageResponse, error) {
 				searchFilter.Add(key, fmt.Sprintf("{\"%s\":%v}",name, boolean))
 			}
 		} else {
-			log.Print("Invalid filter passed: ", key)
+			logger.Info("Invalid filter passed: " + key)
 		}
 	}
 
@@ -38,7 +38,7 @@ func GetImages(all, filter string) ([]duiTypes.ImageResponse, error) {
 	var imageList = make([]duiTypes.ImageResponse, 0)
 
 	if err != nil {
-		log.Print(err)
+		logger.Warn(err)
 		return imageList, err
 	}
 
@@ -58,6 +58,7 @@ func GetImages(all, filter string) ([]duiTypes.ImageResponse, error) {
 	return imageList, err
 }
 
+// PullImage - pull an image from registry
 func PullImage(all, reference, username, password string) (string, error) {
 	allImages := false
 
@@ -68,6 +69,7 @@ func PullImage(all, reference, username, password string) (string, error) {
 	err := docker.PullImage(reference, allImages, username, password)
 
 	if err != nil {
+		logger.Warn(err)
 		return fmt.Sprintf("Error Downloading: %s", reference), err
 	}
 
