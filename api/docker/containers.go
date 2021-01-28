@@ -5,7 +5,7 @@ import (
 	"github.com/docker/docker/api/types/network"
 	duiTypes "github.com/sharma1612harshit/docker.ui/api/types"
 	"github.com/sharma1612harshit/docker.ui/pkg/docker"
-	"log"
+	"github.com/sharma1612harshit/docker.ui/pkg/logger"
 )
 
 // return containers data as json map
@@ -15,7 +15,7 @@ func GetContainers() ([]duiTypes.ContainerResponse, error) {
 	var containerList = make([]duiTypes.ContainerResponse, 0)
 
 	if err != nil {
-		log.Print(err)
+		logger.Warn(err)
 		return containerList, err
 	}
 
