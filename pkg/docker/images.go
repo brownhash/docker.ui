@@ -13,8 +13,12 @@ import (
 
 // GetImages - List local docker images
 func GetImages(all bool, filter filters.Args) ([]types.ImageSummary, error) {
+	logger.Debug("Initiating GetImages")
+
+	logger.Debug("Initiating background context")
 	ctx := context.Background()
 
+	logger.Debug("Initiating docker sdk client")
 	cli, err := Client()
 
 	if err != nil {
@@ -22,6 +26,7 @@ func GetImages(all bool, filter filters.Args) ([]types.ImageSummary, error) {
 		return nil, err
 	}
 
+	logger.Debug("Fetching images and generating response")
 	images, err := cli.ImageList(ctx, types.ImageListOptions{
 		All:     all,				// true
 		Filters: filter, 	// {}
@@ -36,8 +41,12 @@ func GetImages(all bool, filter filters.Args) ([]types.ImageSummary, error) {
 
 // PullImage - Pull specified docker image
 func PullImage(imageRef string, all bool, username, password string) error {
+	logger.Debug("Initiating PullImage")
+
+	logger.Debug("Initiating background context")
 	ctx := context.Background()
 
+	logger.Debug("Initiating docker sdk client")
 	cli, err := Client()
 
 	if err != nil {
@@ -45,6 +54,7 @@ func PullImage(imageRef string, all bool, username, password string) error {
 		return err
 	}
 
+	logger.Debug("generating authConfig")
 	authEncode, err := json.Marshal(types.AuthConfig{
 		Username: username,
 		Password: password,
@@ -55,8 +65,10 @@ func PullImage(imageRef string, all bool, username, password string) error {
 		return err
 	}
 
+	logger.Debug("encoding authConfig")
 	authStr := base64.URLEncoding.EncodeToString(authEncode)
 
+	logger.Debug("pulling image and generating response")
 	reader, err := cli.ImagePull(ctx, imageRef, types.ImagePullOptions{
 		All:           all,
 		RegistryAuth:  authStr,
@@ -78,8 +90,12 @@ func PullImage(imageRef string, all bool, username, password string) error {
 
 // DeleteImage - Delete specified docker image
 func DeleteImage(imageID string, force, pruneChildren bool) ([]types.ImageDelete, error) {
+	logger.Debug("Initiating DeleteImage")
+
+	logger.Debug("Initiating background context")
 	ctx := context.Background()
 
+	logger.Debug("Initiating docker sdk client")
 	cli, err := Client()
 
 	if err != nil {
@@ -87,6 +103,7 @@ func DeleteImage(imageID string, force, pruneChildren bool) ([]types.ImageDelete
 		return nil, err
 	}
 
+	logger.Debug("Deleting image and generating response")
 	dResponse, err := cli.ImageRemove(ctx, imageID, types.ImageRemoveOptions{
 		Force:         force,			// false
 		PruneChildren: pruneChildren,	// false

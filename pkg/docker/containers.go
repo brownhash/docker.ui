@@ -11,8 +11,12 @@ import (
 
 // GetContainers - List local docker containers
 func GetContainers(quiet, size, all, latest bool, since, before string, limit int) ([]types.Container, error) {
+	logger.Debug("Initiating GetContainers")
+
+	logger.Debug("Initiating background context")
 	ctx := context.Background()
 
+	logger.Debug("Initiating docker sdk client")
 	cli, err := Client()
 
 	if err != nil {
@@ -20,6 +24,7 @@ func GetContainers(quiet, size, all, latest bool, since, before string, limit in
 		return nil, err
 	}
 
+	logger.Debug("Fetching containers")
 	list, err := cli.ContainerList(ctx, types.ContainerListOptions{
 		Quiet:   quiet, 			// false
 		Size:    size, 				// false
@@ -40,8 +45,12 @@ func GetContainers(quiet, size, all, latest bool, since, before string, limit in
 
 // LaunchContainer - launch a conatiner
 func LaunchContainer(containerConfig *container.Config, hostConfig *container.HostConfig, networkingConfig *network.NetworkingConfig, containerName string) (container.ContainerCreateCreatedBody, error) {
+	logger.Debug("Initiating LaunchContainer")
+
+	logger.Debug("Initiating background context")
 	ctx := context.Background()
 
+	logger.Debug("Initiating docker sdk client")
 	cli, err := Client()
 
 	if err != nil {
@@ -49,6 +58,7 @@ func LaunchContainer(containerConfig *container.Config, hostConfig *container.Ho
 		return container.ContainerCreateCreatedBody{}, err
 	}
 
+	logger.Debug("launching container and generating response")
 	launchResponse, err := cli.ContainerCreate(ctx, containerConfig, hostConfig, networkingConfig, containerName)
 	
 	if err != nil {
