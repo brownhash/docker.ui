@@ -3,6 +3,7 @@ package logger
 import (
 	"log"
 	"fmt"
+	"net/http"
 )
 
 const (
@@ -71,4 +72,16 @@ func Debug(message interface{}) {
 func Debugf(message interface{}) {
 	formatter := fmt.Sprintf(DebugColor, message)
 	log.Printf(formatter)
+}
+
+// LogRequest - log http requests
+func LogRequest(handler http.Handler) http.Handler {
+	log.SetFlags(log.Ldate | log.Ltime)
+
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		formatter := fmt.Sprintf("%s %s", fmt.Sprintf(SuccessColor, r.Method), fmt.Sprintf(DebugColor, r.URL))
+		log.Printf(formatter)
+
+		handler.ServeHTTP(w, r)
+	})
 }
