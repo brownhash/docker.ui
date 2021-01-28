@@ -14,31 +14,61 @@ const (
 )
 
 // Success - log success messages
-func Success(message string) {
+func Success(message interface{}) {
 	formatter := fmt.Sprintf(SuccessColor, message)
 	log.Println(formatter)
 }
 
+// Successf - log success messages in same line
+func Successf(message interface{}) {
+	formatter := fmt.Sprintf(SuccessColor, message)
+	log.Printf(formatter)
+}
+
 // Info - log informative messages
-func Info(message string) {
+func Info(message interface{}) {
 	formatter := fmt.Sprintf(InfoColor, message)
 	log.Println(formatter)
 }
 
+// Infof - log informative messages in same line
+func Infof(message interface{}) {
+	formatter := fmt.Sprintf(InfoColor, message)
+	log.Printf(formatter)
+}
+
 // Warn - log warning messages
-func Warn(message string) {
+func Warn(message interface{}) {
 	formatter := fmt.Sprintf(WarningColor, message)
 	log.Println(formatter)
 }
 
+// Warnf - log warning messages in same line
+func Warnf(message interface{}) {
+	formatter := fmt.Sprintf(WarningColor, message)
+	log.Printf(formatter)
+}
+
 // Error - log error messages
-func Error(message string) {
+func Error(message interface{}) {
 	formatter := fmt.Sprintf(ErrorColor, message)
 	log.Fatal(formatter)
 }
 
+// Errorf - log error messages in same line
+func Errorf(message interface{}) {
+	formatter := fmt.Sprintf(ErrorColor, message)
+	log.Fatalf(formatter)
+}
+
 // Debug - log debugging messages
-func Debug(message string) {
+func Debug(message interface{}) {
 	formatter := fmt.Sprintf(DebugColor, message)
-	log.Fatal(formatter)
+	log.Println(formatter)
+}
+
+// Debugf - log debugging messages in same line
+func Debugf(message interface{}) {
+	formatter := fmt.Sprintf(DebugColor, message)
+	log.Printf(formatter)
 }
