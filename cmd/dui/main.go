@@ -4,7 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/sharma1612harshit/docker.ui/api/handler"
-	"log"
+	"github.com/sharma1612harshit/docker.ui/pkg/logger"
 	"net/http"
 )
 
@@ -23,7 +23,7 @@ func main() {
 	flag.Parse()
 
 	if *w || *work {
-		log.Print("Initiating docker.ui worker node...")
+		logger.Info("Initiating docker.ui worker node...")
 
 		http.HandleFunc("/images", handler.ImagesHandler)
 		http.HandleFunc("/pull_image", handler.PullImageHandler)
@@ -31,8 +31,8 @@ func main() {
 		http.HandleFunc("/containers", handler.ContainersHandler)
 		http.HandleFunc("/run_container", handler.LaunchContainerHandler)
 
-		log.Fatal(http.ListenAndServe(fmt.Sprintf("%s:%s", nodeAddr, workerPort), nil))
+		logger.Error(http.ListenAndServe(fmt.Sprintf("%s:%s", nodeAddr, workerPort), nil))
 	} else if *c || *control {
-		log.Print("Server not yet coded...")
+		logger.Info("Server not yet coded...")
 	}
 }
