@@ -6,7 +6,7 @@ import (
 	"github.com/docker/docker/api/types/filters"
 	duiTypes "github.com/sharma1612harshit/docker.ui/api/types"
 	"github.com/sharma1612harshit/docker.ui/pkg/docker"
-	"github.com/sharma1612harshit/docker.ui/pkg/logger"
+	"github.com/sharma1612harshit/gomuf/logs"
 )
 
 // GetImages - return images data as json map
@@ -29,7 +29,7 @@ func GetImages(all, filter string) ([]duiTypes.ImageResponse, error) {
 				searchFilter.Add(key, fmt.Sprintf("{\"%s\":%v}",name, boolean))
 			}
 		} else {
-			logger.Info("Invalid filter passed: " + key)
+			logs.Info("Invalid filter passed: " + key)
 		}
 	}
 
@@ -38,7 +38,7 @@ func GetImages(all, filter string) ([]duiTypes.ImageResponse, error) {
 	var imageList = make([]duiTypes.ImageResponse, 0)
 
 	if err != nil {
-		logger.Warn(err)
+		logs.Warn(err)
 		return imageList, err
 	}
 
@@ -69,7 +69,7 @@ func PullImage(all, reference, username, password string) (string, error) {
 	err := docker.PullImage(reference, allImages, username, password)
 
 	if err != nil {
-		logger.Warn(err)
+		logs.Warn(err)
 		return fmt.Sprintf("Error Downloading: %s", reference), err
 	}
 

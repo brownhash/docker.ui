@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/sharma1612harshit/docker.ui/api/handler"
 	"github.com/sharma1612harshit/docker.ui/pkg/config"
-	"github.com/sharma1612harshit/docker.ui/pkg/logger"
+	"github.com/sharma1612harshit/gomuf/logs"
 	"net/http"
 )
 
@@ -20,11 +20,11 @@ func main() {
 
 	flag.Parse()
 
-	logger.SetLogLevel(*logLevel)
+	logs.SetLogLevel(*logLevel)
 
 	if *w || *work {
-		logger.Success(config.DuiLogo)
-		logger.Info("Initiating docker.ui worker node...")
+		logs.Success(config.DuiLogo)
+		logs.Info("Initiating docker.ui worker node...")
 
 		http.HandleFunc("/images", handler.ImagesHandler)
 		http.HandleFunc("/pull_image", handler.PullImageHandler)
@@ -32,11 +32,11 @@ func main() {
 		http.HandleFunc("/containers", handler.ContainersHandler)
 		http.HandleFunc("/run_container", handler.LaunchContainerHandler)
 
-		err := http.ListenAndServe(fmt.Sprintf("%s:%s", config.NodeAddr, config.WorkerPort), logger.LogRequest(http.DefaultServeMux))
-		logger.Error(err)
+		err := http.ListenAndServe(fmt.Sprintf("%s:%s", config.NodeAddr, config.WorkerPort), logs.LogRequest(http.DefaultServeMux))
+		logs.Error(err)
 
 	} else if *c || *control {
-		logger.Success(config.DuiLogo)
-		logger.Info("Server not yet coded...")
+		logs.Success(config.DuiLogo)
+		logs.Info("Server not yet coded...")
 	}
 }

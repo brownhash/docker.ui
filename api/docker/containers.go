@@ -5,7 +5,7 @@ import (
 	"github.com/docker/docker/api/types/network"
 	duiTypes "github.com/sharma1612harshit/docker.ui/api/types"
 	"github.com/sharma1612harshit/docker.ui/pkg/docker"
-	"github.com/sharma1612harshit/docker.ui/pkg/logger"
+	"github.com/sharma1612harshit/gomuf/logs"
 )
 
 // GetContainers - return containers data as json map
@@ -15,7 +15,7 @@ func GetContainers() ([]duiTypes.ContainerResponse, error) {
 	var containerList = make([]duiTypes.ContainerResponse, 0)
 
 	if err != nil {
-		logger.Warn(err)
+		logs.Warn(err)
 		return containerList, err
 	}
 
@@ -115,7 +115,7 @@ func RunContainer(containerName, imageName, hostName, domainName, user string, c
 	resp, err := docker.LaunchContainer(containerConf, hostConf, netConf, containerName)
 
 	if err != nil {
-		logger.Warn(err)
+		logs.Warn(err)
 	}
 
 	return resp, err
